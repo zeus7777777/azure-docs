@@ -434,6 +434,23 @@ sections:
           - In Form Recognizer Studio, you can select the top right gear button (Settings), under Directory, search and select the directory from the list and select on Switch Directory. You'll be prompted to sign in again after switching directory.
 
           - Switching subscriptions or resources can be done under Settings -> Resource tab.
+      - question: |
+          I cannot select my Form Recognizer Resource in Form Recognizer Studio.
+        answer: |
+        
+          If the error message contains 'The JSON value could not be converted to Azure.ResourceManager.Models.ManagedServiceIdentity', please check all your Cognitive Services resources under the selected resource group in Azure Portal. For each Cognitive Services resource, in the overview page click the 'JSON view' in the top-right corner and see if the `identity` part contains the below empty string property.
+
+```json
+    "identity": {
+        "principalId": "",
+        "tenantId": "",
+        "type": "None"
+    },
+```
+
+          If `principalId` or `tenantId` is empty string, please navigate to the identity page, turn on **System assigned** identity and then turn of. After doing this step on all Cognitive Services resources, go back to Form Recognizer Studio and see if the selection of Form Recognizer resource works.
+
+          This is a known issue when using Terraform to create resource.
 
   - name: Containers
     questions:
